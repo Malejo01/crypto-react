@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import styled from '@emotion/styled'
+import Error from './Error'
 import UseSelectMonedas from '../hooks/useSelectMonedas'
 import {monedas} from '../data/monedas'
 
@@ -23,6 +24,7 @@ const InputSubmit = styled.input`
 function Formulario() {
     
     const [criptos,setCriptos] = useState([])
+    const [error,setError] = useState(false)
 
     const [moneda,SelectMonedas]= UseSelectMonedas('Elige tu Moneda', monedas)
     const [criptomoneda,SelectCriptomoneda]= UseSelectMonedas('Elige tu Criptomoneda', criptos)
@@ -47,12 +49,29 @@ function Formulario() {
         }
         consultarAPI()
     },[])
+
+    const handleSubmit = e => {
+        e.preventDefault()
+
+        if([moneda,criptomoneda].includes('')) {
+            setError(true)
+            return
+        }
+
+        setError(false)
+    }
+
     return (
-        <form>
+        <>
+        {error && <Error>Debes seleccionar ambas opciones</Error>}
+        <form 
+        onSubmit={handleSubmit}
+        >
             <SelectMonedas/>
             <SelectCriptomoneda/>
            <InputSubmit type="submit" value="Cotizar"></InputSubmit> 
         </form>
+        </>
     )
 }
 
