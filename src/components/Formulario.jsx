@@ -64,6 +64,7 @@ function Formulario({setMonedas}) {
             moneda,
             criptomoneda
         })
+        
     }
 
     return (
